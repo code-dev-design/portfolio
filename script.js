@@ -17,7 +17,7 @@
   const projectList = $('#project-list');
   const preview = document.createElement('div');
   preview.className = 'project-preview';
-  preview.innerHTML = '<img alt="Project preview">';
+  preview.innerHTML = '<img alt="معاينة المشروع">';
   document.body.appendChild(preview);
 
   projects.forEach((project, i) => {
@@ -27,8 +27,8 @@
     row.innerHTML = `
       <span class="number">${String(i+1).padStart(2,'0')}</span>
       <h3>${project.name}</h3>
-      <div class="project-meta"><span>${project.type}</span><span>${project.images.length} selected works · ${project.year}</span></div>
-      <span class="project-arrow">↗</span>`;
+      <div class="project-meta"><span>${project.type}</span><span>${project.images.length} عمل مختار · ${project.year}</span></div>
+      <span class="project-arrow">↖</span>`;
     row.addEventListener('click', () => setFilter(project.slug, true));
     row.addEventListener('mouseenter', () => { preview.querySelector('img').src = project.cover; preview.classList.add('visible'); });
     row.addEventListener('mouseleave', () => preview.classList.remove('visible'));
@@ -37,7 +37,7 @@
   });
 
   const filters = $('#filters');
-  [{slug:'all',name:'All work'}, ...projects.map(p => ({slug:p.slug,name:p.name}))].forEach((item,i) => {
+  [{slug:'all',name:'كل الأعمال'}, ...projects.map(p => ({slug:p.slug,name:p.name}))].forEach((item,i) => {
     const button = document.createElement('button');
     button.className = `filter-button${i===0?' active':''}`;
     button.textContent = item.name;
@@ -66,21 +66,21 @@
       item.hidden = !show;
       if(show) count++;
     });
-    $('#visible-count').textContent = `${String(count).padStart(2,'0')} works displayed`;
+    $('#visible-count').textContent = `يتم عرض ${String(count).padStart(2,'0')} عمل`;
     if(scroll) $('#work').scrollIntoView({behavior:'smooth'});
   }
   setFilter('all');
 
   const links = $('#contact-links');
   const contactOptions = [
-    ['Email', config.email ? `mailto:${config.email}` : ''],
-    ['Instagram', config.instagram],
-    ['Behance', config.behance]
+    ['البريد الإلكتروني', config.email ? `mailto:${config.email}` : ''],
+    ['إنستغرام', config.instagram],
+    ['بيهانس', config.behance]
   ].filter(([,href]) => href);
   if(contactOptions.length) contactOptions.forEach(([label,href]) => {
     const a=document.createElement('a'); a.href=href; a.textContent=label; if(!href.startsWith('mailto:')) {a.target='_blank';a.rel='noreferrer';} links.appendChild(a);
   });
-  else links.innerHTML = '<span style="color:#777;font-size:11px;letter-spacing:.12em;text-transform:uppercase">Add your email and social links in portfolio-data.js</span>';
+  else links.hidden = true;
 
   const lightbox = $('.lightbox');
   const lightboxImg = $('.lightbox img');
@@ -91,14 +91,14 @@
   function moveLightbox(dir) { currentIndex=(currentIndex+dir+allImages.length)%allImages.length; updateLightbox(); }
   $('.lightbox-close').addEventListener('click',closeLightbox); $('.lightbox-prev').addEventListener('click',()=>moveLightbox(-1)); $('.lightbox-next').addEventListener('click',()=>moveLightbox(1));
   lightbox.addEventListener('click',e=>{ if(e.target===lightbox) closeLightbox(); });
-  document.addEventListener('keydown',e=>{ if(!lightbox.classList.contains('open')) return; if(e.key==='Escape') closeLightbox(); if(e.key==='ArrowRight') moveLightbox(1); if(e.key==='ArrowLeft') moveLightbox(-1); });
+  document.addEventListener('keydown',e=>{ if(!lightbox.classList.contains('open')) return; if(e.key==='Escape') closeLightbox(); if(e.key==='ArrowLeft') moveLightbox(1); if(e.key==='ArrowRight') moveLightbox(-1); });
 
   const observer = new IntersectionObserver(entries => entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('in-view'); }), {threshold:.08, rootMargin:'0px 0px -35px'});
   $$('.reveal,.gallery-item').forEach(el=>observer.observe(el));
 
   const toggle=$('.menu-toggle'), mobileMenu=$('.mobile-menu');
-  toggle.addEventListener('click',()=>{ const open=document.body.classList.toggle('menu-open'); toggle.setAttribute('aria-expanded',String(open)); mobileMenu.setAttribute('aria-hidden',String(!open)); });
-  $$('.mobile-menu a').forEach(a=>a.addEventListener('click',()=>{ document.body.classList.remove('menu-open'); toggle.setAttribute('aria-expanded','false'); mobileMenu.setAttribute('aria-hidden','true'); }));
+  toggle.addEventListener('click',()=>{ const open=document.body.classList.toggle('menu-open'); toggle.setAttribute('aria-expanded',String(open)); mobileMenu.setAttribute('aria-hidden',String(!open)); toggle.setAttribute('aria-label', open ? 'إغلاق القائمة' : 'فتح القائمة'); });
+  $$('.mobile-menu a').forEach(a=>a.addEventListener('click',()=>{ document.body.classList.remove('menu-open'); toggle.setAttribute('aria-expanded','false'); mobileMenu.setAttribute('aria-hidden','true'); toggle.setAttribute('aria-label','فتح القائمة'); }));
 
   const progress=$('.scroll-progress span');
   const updateProgress=()=>{ const max=document.documentElement.scrollHeight-innerHeight; progress.style.width=`${max>0?(scrollY/max)*100:0}%`; };
