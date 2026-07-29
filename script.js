@@ -105,8 +105,12 @@
   const updateOnScroll=()=>{
     const max=document.documentElement.scrollHeight-innerHeight;
     progress.style.width=`${max>0?(scrollY/max)*100:0}%`;
-    siteHeader.classList.toggle('is-scrolled', window.scrollY > 32);
+    const scrolled = window.scrollY > 6;
+    siteHeader.classList.toggle('is-scrolled', scrolled);
+    document.body.classList.toggle('header-scrolled', scrolled);
   };
-  addEventListener('scroll',updateOnScroll,{passive:true});
+  addEventListener('scroll', updateOnScroll, {passive:true});
+  addEventListener('load', updateOnScroll);
+  addEventListener('pageshow', updateOnScroll);
   updateOnScroll();
 })();

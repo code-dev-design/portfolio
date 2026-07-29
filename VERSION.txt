@@ -1,2 +1,2 @@
-Anas Hamandoush Portfolio — Arabic RTL + red scroll header
-Build: 2026-07-29 ar-red-1
+Arabic Premium Hero + Reliable Red Header
+Build: 2026-07-29-2
