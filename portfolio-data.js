@@ -8,6 +8,7 @@ const PORTFOLIO_CONFIG = {
   "email": "",
   "instagram": "",
   "behance": "",
+  "whatsapp": "+963931685173",
   "footer": "متاح لتنفيذ مشاريع تصميم مختارة والعمل الحر."
 };
 

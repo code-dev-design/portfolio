@@ -72,15 +72,33 @@
   setFilter('all');
 
   const links = $('#contact-links');
+  const whatsappNumber = (config.whatsapp || '').replace(/\D/g, '');
   const contactOptions = [
-    ['البريد الإلكتروني', config.email ? `mailto:${config.email}` : ''],
-    ['إنستغرام', config.instagram],
-    ['بيهانس', config.behance]
-  ].filter(([,href]) => href);
-  if(contactOptions.length) contactOptions.forEach(([label,href]) => {
-    const a=document.createElement('a'); a.href=href; a.textContent=label; if(!href.startsWith('mailto:')) {a.target='_blank';a.rel='noreferrer';} links.appendChild(a);
+    {label:'البريد الإلكتروني', href:config.email ? `mailto:${config.email}` : ''},
+    {label:'إنستغرام', href:config.instagram},
+    {label:'بيهانس', href:config.behance}
+  ].filter(item => item.href);
+
+  if (whatsappNumber) {
+    const whatsapp = document.createElement('a');
+    whatsapp.href = `https://wa.me/${whatsappNumber}`;
+    whatsapp.className = 'whatsapp-link';
+    whatsapp.target = '_blank';
+    whatsapp.rel = 'noreferrer';
+    whatsapp.setAttribute('aria-label', 'التواصل عبر واتساب على الرقم +963 931 685 173');
+    whatsapp.innerHTML = '<span>تواصل عبر واتساب</span><strong dir="ltr">+963 931 685 173</strong>';
+    links.appendChild(whatsapp);
+  }
+
+  contactOptions.forEach(({label,href}) => {
+    const a=document.createElement('a');
+    a.href=href;
+    a.textContent=label;
+    if(!href.startsWith('mailto:')) {a.target='_blank';a.rel='noreferrer';}
+    links.appendChild(a);
   });
-  else links.hidden = true;
+
+  if(!whatsappNumber && !contactOptions.length) links.hidden = true;
 
   const lightbox = $('.lightbox');
   const lightboxImg = $('.lightbox img');
