@@ -101,6 +101,12 @@
   $$('.mobile-menu a').forEach(a=>a.addEventListener('click',()=>{ document.body.classList.remove('menu-open'); toggle.setAttribute('aria-expanded','false'); mobileMenu.setAttribute('aria-hidden','true'); toggle.setAttribute('aria-label','فتح القائمة'); }));
 
   const progress=$('.scroll-progress span');
-  const updateProgress=()=>{ const max=document.documentElement.scrollHeight-innerHeight; progress.style.width=`${max>0?(scrollY/max)*100:0}%`; };
-  addEventListener('scroll',updateProgress,{passive:true}); updateProgress();
+  const siteHeader=$('.site-header');
+  const updateOnScroll=()=>{
+    const max=document.documentElement.scrollHeight-innerHeight;
+    progress.style.width=`${max>0?(scrollY/max)*100:0}%`;
+    siteHeader.classList.toggle('is-scrolled', window.scrollY > 32);
+  };
+  addEventListener('scroll',updateOnScroll,{passive:true});
+  updateOnScroll();
 })();
